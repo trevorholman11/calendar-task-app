@@ -16,7 +16,7 @@ public class Task {
 	private String title;
 	private int priority; // 1: High, 2: Medium, 3: Low
 	private LocalDate date;
-	private boolean isComplete;
+	private boolean complete;
 	private String category; // e.g., Work, Personal, Urgent
 	
 	/*
@@ -57,12 +57,12 @@ public class Task {
 		this.date = date;
 	}
 
-	public boolean getIsComplete() {
-		return isComplete;
+	public boolean isComplete() {
+		return complete;
 	}
 
 	public void setComplete(boolean complete) {
-		isComplete = complete;
+		this.complete = complete;
 	}
 
 	public String getCategory() {

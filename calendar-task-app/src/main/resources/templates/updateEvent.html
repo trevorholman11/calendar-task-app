@@ -1,30 +1,130 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Update Event</title>
+
+<style>
+    body {
+      background-color: #333; /* dark background */
+      text-align: center; 
+      font-family: 'Century Schoolbook', serif;
+      color: #fff; /* white text */
+    }
+
+    header {
+      background-color: #444; /* dark background */
+      color: #fff; /* white text */
+      padding: 20px; 
+      text-align: center; 
+      border-radius: 10px 10px 0 0;
+    }
+
+    .container {
+      max-width: 600px; 
+      margin: 40px auto; 
+      padding: 20px; 
+      background-color: #444; /* dark background */
+      border: 1px solid #555; /* dark border */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+      border-radius: 10px;
+    }
+
+    h2 {
+      border-radius: 10px 10px 0 0; 
+      background-color: #333; /* dark background */
+      padding: 10px; 
+      margin-bottom: 20px;
+      color: #fff; /* white text */
+    }
+
+    form {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="date"] {
+      padding: 10px; 
+      margin-bottom: 20px;
+      background-color: #444; /* dark background */
+      color: #fff; /* white text */
+      border: 1px solid #555; /* dark border */
+      border-radius: 5px;
+    }
+
+    input[type="checkbox"] {
+      margin-bottom: 20px;
+    }
+
+    input[type="submit"] {
+      background-color: #007bff; 
+      color: #fff; /* white text */
+      padding: 10px 20px; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function toggleRecurrenceOptions(checkbox) {
+      var recurrenceDiv = document.getElementById("recurrenceOptions");
+      if (checkbox.checked) {
+        recurrenceDiv.style.display = "block";
+      } else {
+        recurrenceDiv.style.display = "none";
+      }
+    }
+  </script>
+  <script>
+  	function toggleReminderDateTime(checkbox) {
+  		var reminderDiv = document.getElementById("reminderDateTime");
+  		if (checkbox.checked) {
+  			reminderDiv.style.display = "block";
+  		} else {
+  			reminderDiv.style.display = "none";
+  		}
+  	}
+  </script>
+  
 </head>
 <body>
-    <h2>Update Event</h2>
+  <header>
+    <h1>Events</h1>
+  </header>
+  <div class="container">
+    <h2>Add Event</h2>
     <form th:action="@{/events/update/{id}(id=${event.id})}" th:object="${event}" method="post">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" th:value="*{title}" /><br />
+    <p>Title: <input type="text" th:field="*{title}"/></p>
+    <p>Date: <input type="date" th:field="*{date}"/></p>
+    <p>Time: <input type="text" th:field="*{time}"/></p>
+    <p>Category: <input type="text" th:field="*{category}"/></p>
+    <p>Location: <input type="text" th:field="*{location}"/></p>
 
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" th:value="*{date}" /><br />
+	<p>Recurring? <input type="checkbox" id="recurringCheckbox" th:field="*{recurring}" value="true" onclick="toggleRecurrenceOptions(this)"/></p>
 
-        <label for="time">Time:</label>
-        <input type="text" id="time" name="time" th:value="*{time}" /><br />
-        
-        <label for="recurring">Is Recurring:</label>
-        <input type="checkbox" id="recurring" name="recurring" th:checked="*{recurring}" /><br />
+      <div id="recurrenceOptions" style="display: none;">
+      	<p>Recurrence Type: 
+            <select th:field="*{recurrenceType}">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+            </select>
+        </p>
+        <p>Recurrence End Date: <input type="date" th:field="*{recurrenceEndDate}"/></p>
+      </div>
 
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category" th:value="*{category}" /><br />
+    <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
+    	
+    	<div id="reminderDateTime" style="display: none;">
+    		<p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+    	</div>
 
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" th:value="*{location}" /><br />
+    <input type="submit" value="Add Event"/>
+</form>
 
-        <button type="submit">Update Event</button>
-    </form>
+  </div>
 </body>
 </html>

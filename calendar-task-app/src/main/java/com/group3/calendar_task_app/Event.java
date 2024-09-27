@@ -48,6 +48,11 @@ public class Event {
 		return id;
 	}
 	
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	
 	public String getTitle() {
 		return title;
 	}
@@ -127,6 +132,7 @@ public class Event {
 	public void setRecurrenceEndDate(LocalDate recurrenceEndDate) {
 		this.recurrenceEndDate = recurrenceEndDate;
 	}
+
 
 	// Additional methods for recurring event management, etc.
 }

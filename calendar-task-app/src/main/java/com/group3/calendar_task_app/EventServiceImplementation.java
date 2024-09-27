@@ -123,6 +123,48 @@ public class EventServiceImplementation implements EventService {
 		}
 		if (Objects.nonNull(event.isRecurring())) {
 			eventDB.setRecurring(event.isRecurring());
+			if (event.isRecurring()) {
+	            LocalDate startDate = event.getDate();
+	            LocalDate endDate = event.getRecurrenceEndDate();
+				while (!startDate.isAfter(endDate)) {
+	                Event recurringEvent = new Event();
+	                recurringEvent.setTitle(event.getTitle());
+	                recurringEvent.setDate(startDate);
+	                recurringEvent.setTime(event.getTime());
+	                recurringEvent.setCategory(event.getCategory());
+	                recurringEvent.setLocation(event.getLocation());
+	                recurringEvent.setRecurring(event.isRecurring());
+	                recurringEvent.setRecurrenceEndDate(endDate);
+	                recurringEvent.setRecurrenceType(event.getRecurrenceType());
+	                recurringEvent.setReminder(event.isReminder());
+	                recurringEvent.setReminderTime(event.getReminderTime());
+
+	                if (!event.getDate().equals(recurringEvent.getDate())) {
+		                eventRepository.save(recurringEvent);
+	                } else {
+	                	recurringEvent.setId(event.getId());
+	                	eventRepository.save(recurringEvent);
+	                }
+
+	                switch (event.getRecurrenceType()) {
+	                    case "daily":
+	                        startDate = startDate.plusDays(1);
+	                        break;
+	                    case "weekly":
+	                        startDate = startDate.plusWeeks(1);
+	                        break;
+	                    case "monthly":
+	                        startDate = startDate.plusMonths(1);
+	                        break;
+	                    case "yearly":
+	                        startDate = startDate.plusYears(1);
+	                        break;
+	                }
+	            }
+	        } else {
+	        	event.setRecurrenceType(null); //Logic in events.html will automatically set it to "daily" if recurrence is not checked
+	            eventRepository.save(event);
+	        }
 		}
 		if (Objects.nonNull(event.getCategory()) && !"".equalsIgnoreCase(event.getCategory())) {
 			eventDB.setCategory(event.getCategory());

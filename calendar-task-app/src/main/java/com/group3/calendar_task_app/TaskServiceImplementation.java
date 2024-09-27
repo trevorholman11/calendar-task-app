@@ -45,8 +45,8 @@ public class TaskServiceImplementation implements TaskService {
 		if (Objects.nonNull(task.getDate())) {
 			taskDB.setDate(task.getDate());
 		}
-		if (Objects.nonNull(task.getIsComplete())) {
-			taskDB.setComplete(task.getIsComplete());
+		if (Objects.nonNull(task.isComplete())) {
+			taskDB.setComplete(task.isComplete());
 		}
 		if (Objects.nonNull(task.getCategory()) && !"".equalsIgnoreCase(task.getCategory())) {
 			taskDB.setCategory(task.getCategory());
