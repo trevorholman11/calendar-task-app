@@ -1,0 +1,49 @@
+/* Global styles */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Light gray background */
+  }
+  
+  /* Blue theme */
+  
+  .blue-theme {
+    background-color: #4567b7; /* Blue background */
+    color: #ffffff; /* White text */
+  }
+  
+  /* Square boxes with soft corners */
+  
+  .box {
+    background-color: #ffffff; /* White background */
+    border: 1px solid #dddddd; /* Light gray border */
+    border-radius: 10px; /* Soft corners */
+    padding: 20px;
+    margin: 20px;
+    width: 300px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
+    display: inline-block;
+  }
+  
+  .box:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow on hover */
+  }
+  
+  /* Header styles */
+  
+  h1 {
+    color: #4567b7; /* Blue text */
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Link styles */
+  
+  a {
+    text-decoration: none;
+    color: #337ab7; /* Blue link color */
+  }
+  
+  a:hover {
+    color: #23527c; /* Darker blue link color on hover */
+  }

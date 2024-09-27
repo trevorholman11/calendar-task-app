@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Task Results</title>
+  <style>
+    body {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+    }
+    h1, p, a {
+      display: inline-block;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+    <style>
+        body {
+          background-color: #333;
+          color: #fff;
+          text-align: center;
+        }
+        h1, p, a {
+          display: inline-block;
+          margin: 20px;
+        }
+      </style>
+
+<h1 style="text-align: center; color: #fff; background-color: #333; padding: 20px; border-radius: 10px;">Task Results</h1>
+
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+  <table style="background-color: #444; border: 1px solid #555; border-radius: 10px; padding: 20px;">
+    <thead>
+    <tr>
+      <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Title</th>
+      <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Priority</th>
+      <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Date</th>
+      <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">isComplete</th>
+      <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Category</th>
+    </tr>
+    </thead>
+    <tbody>
+      <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;" th:text="${task.title}"></td>
+      <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;" th:text="${task.priority}"></td>
+      <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;" th:text="${task.date}"></td>
+      <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;" th:text="${task.isComplete ? 'Yes' : 'No'}"></td>
+      <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;" th:text="${task.category}"></td>
+    </tbody>
+  </table>
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/tasks">Create New Task</a>
+  <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/tasks/table">Task List</a>
+</div>
+
+</body>
+</html>
+
