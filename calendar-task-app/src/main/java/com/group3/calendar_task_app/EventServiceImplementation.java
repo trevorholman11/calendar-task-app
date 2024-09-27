@@ -36,6 +36,8 @@ public class EventServiceImplementation implements EventService {
                 recurringEvent.setRecurring(event.isRecurring());
                 recurringEvent.setRecurrenceEndDate(endDate);
                 recurringEvent.setRecurrenceType(event.getRecurrenceType());
+                recurringEvent.setReminder(event.isReminder());
+                recurringEvent.setReminderTime(event.getReminderTime());
 
                 eventRepository.save(recurringEvent);
 
