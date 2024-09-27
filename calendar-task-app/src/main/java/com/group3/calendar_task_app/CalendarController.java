@@ -63,6 +63,7 @@ public class CalendarController {
     public String eventSubmit(@ModelAttribute Event event, Model model) {
     	eventService.saveEvent(event);
         System.out.println("Received event: " + event);
+        System.out.println("Recuuring?: " + event.isRecurring());
     	model.addAttribute("event", event);
     	return "/results";
     }

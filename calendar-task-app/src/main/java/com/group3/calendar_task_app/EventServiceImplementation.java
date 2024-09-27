@@ -33,7 +33,9 @@ public class EventServiceImplementation implements EventService {
                 recurringEvent.setTime(event.getTime());
                 recurringEvent.setCategory(event.getCategory());
                 recurringEvent.setLocation(event.getLocation());
-                recurringEvent.setRecurring(false);
+                recurringEvent.setRecurring(event.isRecurring());
+                recurringEvent.setRecurrenceEndDate(endDate);
+                recurringEvent.setRecurrenceType(event.getRecurrenceType());
 
                 eventRepository.save(recurringEvent);
 
@@ -53,6 +55,7 @@ public class EventServiceImplementation implements EventService {
                 }
             }
         } else {
+        	event.setRecurrenceType(null); //Logic in events.html will automatically set it to "daily" if recurrence is not checked
             eventRepository.save(event);
         }
         return event;

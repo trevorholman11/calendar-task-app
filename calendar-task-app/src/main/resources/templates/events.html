@@ -78,6 +78,16 @@
       }
     }
   </script>
+  <script>
+  	function toggleReminderDateTime(checkbox) {
+  		var reminderDiv = document.getElementById("reminderDateTime");
+  		if (checkbox.checked) {
+  			reminderDiv.style.display = "block";
+  		} else {
+  			reminderDiv.style.display = "none";
+  		}
+  	}
+  </script>
   
 </head>
 <body>
@@ -95,9 +105,8 @@
 
 	<p>Recurring? <input type="checkbox" id="recurringCheckbox" th:field="*{recurring}" value="true" onclick="toggleRecurrenceOptions(this)"/></p>
 
-
       <div id="recurrenceOptions" style="display: none;">
-        <p>Recurrence Type: 
+      	<p>Recurrence Type: 
             <select th:field="*{recurrenceType}">
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -108,8 +117,11 @@
         <p>Recurrence End Date: <input type="date" th:field="*{recurrenceEndDate}"/></p>
       </div>
 
-    <p>Set Reminder? <input type="checkbox" th:field="*{reminder}"/></p>
-    <p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+    <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
+    	
+    	<div id="reminderDateTime" style="display: none;">
+    		<p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+    	</div>
 
     <input type="submit" value="Add Event"/>
 </form>
