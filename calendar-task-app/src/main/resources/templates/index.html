@@ -102,5 +102,19 @@
       });
     });
   </script>
+  
+  <script>
+  // Poll the server every minute for notifications
+  setInterval(() => {
+    fetch("/events/reminders")
+      .then(response => response.json())
+      .then(reminders => {
+        reminders.forEach(reminder => {
+          // Display a pop-up notification for each reminder
+          alert(`Reminder: ${reminder.title} is happening on ${reminder.date} at ${reminder.time}`);
+        });
+      });
+  }, 60000); // 60 seconds
+</script>
 </body>
 </html>

@@ -19,6 +19,7 @@ public interface EventService {
 
 	
 	List<Event> fetchEventList();
+	List<Event> getReminders();
 	
 	Optional<Event> fetchEventById(Long eventID);
 	

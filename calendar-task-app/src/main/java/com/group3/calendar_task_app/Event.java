@@ -33,6 +33,7 @@ public class Event {
     // Reminder fields
     private boolean reminder;
     private LocalDateTime reminderTime;
+    private boolean reminderSent;
 	/*
 	 *	@ManyToOne
 	private Person person;
@@ -133,6 +134,12 @@ public class Event {
 		this.recurrenceEndDate = recurrenceEndDate;
 	}
 
+	public boolean isReminderSent() {
+		return reminderSent;
+	}
 
-	// Additional methods for recurring event management, etc.
+	public void setReminderSent(boolean reminderSent) {
+		this.reminderSent = reminderSent;
+	}
+	
 }

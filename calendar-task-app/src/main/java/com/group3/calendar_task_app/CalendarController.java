@@ -114,6 +114,13 @@ public class CalendarController {
         return "redirect:/events/table";  
     }
     
+    @GetMapping("/events/reminders")
+    @ResponseBody
+    public List<Event> getReminders() {
+        List<Event> reminders = eventService.getReminders();
+        return reminders;
+    }
+    
     // Route to get task info
     @GetMapping("/tasks")
     public String taskForm(Model model) {

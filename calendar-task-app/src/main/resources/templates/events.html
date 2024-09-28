@@ -88,7 +88,7 @@
   		}
   	}
   </script>
-  
+ 
 </head>
 <body>
   <header>
@@ -121,6 +121,7 @@
     	
     	<div id="reminderDateTime" style="display: none;">
     		<p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+    		<input type="hidden" id="reminderSent" name="reminderSent" value="false">
     	</div>
 
     <input type="submit" value="Add Event"/>

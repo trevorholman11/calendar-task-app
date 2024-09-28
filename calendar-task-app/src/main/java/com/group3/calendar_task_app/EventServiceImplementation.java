@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -81,23 +81,18 @@ public class EventServiceImplementation implements EventService {
     public List<Event> filterEventsByRecurring(boolean recurring) {
         return eventRepository.findByRecurring(recurring);
     }
-
-    @Scheduled(fixedRate = 60000) // Check every minute
-    public void checkReminders() {
+    
+    public List<Event> getReminders() {
         List<Event> events = eventRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
-
-        for (Event event : events) {
-            if (event.isReminder() && event.getReminderTime().isBefore(now)) {
-                sendReminder(event);
-            }
-        }
+        return events.stream()
+        		.filter(event -> event.isReminder() && event.getReminderTime().isBefore(now) && !event.isReminderSent())            
+        		.peek(event -> {
+        			event.setReminderSent(true); // Set reminderSent to true
+        			eventRepository.save(event); // Save the updated event to the database
+        		}).collect(Collectors.toList());
     }
-
-    private void sendReminder(Event event) {
-        // Simple placeholder for notification logic
-        System.out.println("Reminder: " + event.getTitle() + " is happening on " + event.getDate() + " at " + event.getTime());
-    }
+    
 	@Override
 	public List<Event> fetchEventList() {
 		return (List<Event>) eventRepository.findAll();
