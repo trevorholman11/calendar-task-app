@@ -1,6 +1,5 @@
 package com.group3.calendar_task_app;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,19 +36,11 @@ public class CalendarController {
     }
     
     @GetMapping("/events/filter")
-    public String filterEvents(@RequestParam(required = false) String category, 
-                               @RequestParam(required = false) LocalDate startDate, 
-                               @RequestParam(required = false) LocalDate endDate, 
-                               @RequestParam(required = false) boolean recurring, 
-                               Model model) {
+    public String filterEvents(@RequestParam(required = false) String category, Model model) {
         List<Event> filteredEvents;
 
         if (category != null) {
             filteredEvents = eventService.filterEventsByCategory(category);
-        } else if (startDate != null && endDate != null) {
-            filteredEvents = eventService.filterEventsByDateRange(startDate, endDate);
-        } else if (recurring) {
-            filteredEvents = eventService.filterEventsByRecurring(true);
         } else {
             filteredEvents = eventService.getAllEvents();
         }
@@ -179,6 +170,20 @@ public class CalendarController {
     public String deleteTask(@PathVariable long id) {
         taskService.deleteTaskById(id); 
         return "redirect:/tasks/table";  
+    }
+    
+    @GetMapping("/tasks/filter")
+    public String filterTasks(@RequestParam(required = false) String category, Model model) {
+        List<Task> filteredTasks;
+
+        if (category != null) {
+            filteredTasks = taskService.filterTasksByCategory(category);
+        } else {
+            filteredTasks = taskService.getAllTasks();
+        }
+
+        model.addAttribute("tasks", filteredTasks);
+        return "taskList";
     }
 
     

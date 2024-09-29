@@ -3,7 +3,6 @@ package com.group3.calendar_task_app;
  * References: https://www.geeksforgeeks.org/spring-boot-with-h2-database/
  */
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -67,20 +66,10 @@ public class EventServiceImplementation implements EventService {
     }
 
     @Override
-    public List<Event> filterEventsByDateRange(LocalDate startDate, LocalDate endDate) {
-        return eventRepository.findByDateBetween(startDate, endDate);
-    }
-
-    @Override
     public List<Event> filterEventsByCategory(String category) {
         return eventRepository.findByCategory(category);
     }
 
-    @Override
-    public List<Event> filterEventsByRecurring(boolean recurring) {
-        return eventRepository.findByRecurring(recurring);
-    }
-    
     public List<Event> getReminders() {
         List<Event> events = eventRepository.findAll();
         LocalDateTime now = LocalDateTime.now();

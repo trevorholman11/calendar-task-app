@@ -37,6 +37,13 @@
   </table>
 </div>
 
+  <form action="#" th:action="@{/tasks/filter}" method="get">
+    <p>Filter by Category: 
+        <input type="text" name="category"/>
+    </p>
+    <input type="submit" value="Filter"/>
+</form>
+
 <div style="text-align: center; margin-top: 40px;">
   <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/">Home</a>
   <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/tasks">Create New Task</a>

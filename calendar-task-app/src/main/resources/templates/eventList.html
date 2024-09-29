@@ -37,16 +37,8 @@
   </div>
   
   <form action="#" th:action="@{/events/filter}" method="get">
-    <p>Filter by Date Range: 
-        <input type="date" name="startDate"/>
-        to 
-        <input type="date" name="endDate"/>
-    </p>
     <p>Filter by Category: 
         <input type="text" name="category"/>
-    </p>
-    <p>Filter by Recurrence: 
-        <input type="checkbox" name="isRecurring"/>
     </p>
     <input type="submit" value="Filter"/>
 </form>

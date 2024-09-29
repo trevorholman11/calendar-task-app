@@ -16,7 +16,9 @@ public interface TaskService {
 	Optional<Task> fetchTaskById(Long eventID);
 	
 	Task updateTask(Task task, Long eventID);
-	
+
 	void deleteTaskById(Long eventID);
+    public List<Task> filterTasksByCategory(String category);
+    List<Task> getAllTasks();
 
 }

@@ -59,5 +59,19 @@ public class TaskServiceImplementation implements TaskService {
 		
 		taskRepository.deleteById(taskID);
 	}
+	
+    @Override
+    public List<Task> filterTasksByCategory(String category) {
+        return taskRepository.findByCategory(category);
+    }
+
+	@Override
+	public List<Task> getAllTasks() {
+		return taskRepository.findAll();
+	}
+
+
+
+
 
 }
