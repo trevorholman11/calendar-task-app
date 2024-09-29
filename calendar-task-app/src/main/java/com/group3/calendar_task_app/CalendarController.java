@@ -185,6 +185,12 @@ public class CalendarController {
         model.addAttribute("tasks", filteredTasks);
         return "taskList";
     }
-
+    
+    @GetMapping("/tasks/reminders")
+    @ResponseBody
+    public List<Task> getTaskReminders() {
+        List<Task> reminders = taskService.getReminders();
+        return reminders;
+    }
     
 }

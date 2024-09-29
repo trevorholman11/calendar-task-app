@@ -20,6 +20,11 @@ public class Task {
 	private boolean complete;
 	private String category; // e.g., Work, Personal, Urgent
 	
+    // Reminder fields
+    private boolean reminder;
+    private LocalDateTime reminderTime;
+    private boolean reminderSent;
+	
 	// No argument constructor is needed for Jarkarta
 	public Task() {}
 	
@@ -67,5 +72,29 @@ public class Task {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public boolean isReminder() {
+		return reminder;
+	}
+
+	public void setReminder(boolean reminder) {
+		this.reminder = reminder;
+	}
+
+	public LocalDateTime getReminderTime() {
+		return reminderTime;
+	}
+
+	public void setReminderTime(LocalDateTime reminderTime) {
+		this.reminderTime = reminderTime;
+	}
+
+	public boolean isReminderSent() {
+		return reminderSent;
+	}
+
+	public void setReminderSent(boolean reminderSent) {
+		this.reminderSent = reminderSent;
 	}
 }

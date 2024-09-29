@@ -3,9 +3,11 @@ package com.group3.calendar_task_app;
  * References: https://www.geeksforgeeks.org/spring-boot-with-h2-database/
  */
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,15 @@ public class TaskServiceImplementation implements TaskService {
 		if (Objects.nonNull(task.getCategory()) && !"".equalsIgnoreCase(task.getCategory())) {
 			taskDB.setCategory(task.getCategory());
 		}
+		if (Objects.nonNull(task.isReminder()) && Objects.nonNull(task.getReminderTime())) {
+			taskDB.setReminder(task.isReminder());
+			taskDB.setReminderTime(task.getReminderTime());
+			taskDB.setReminderSent(false);
+		}
+		
+		if (!Objects.nonNull(task.isReminder())) {
+			taskDB.setReminder(false);
+		}
 		return taskRepository.save(taskDB);
 	}
 
@@ -70,8 +81,14 @@ public class TaskServiceImplementation implements TaskService {
 		return taskRepository.findAll();
 	}
 
-
-
-
-
+    public List<Task> getReminders() {
+        List<Task> tasks = taskRepository.findAll();
+        LocalDateTime now = LocalDateTime.now();
+        return tasks.stream()
+        		.filter(task -> task.isReminder() && task.getReminderTime().isBefore(now) && !task.isReminderSent())            
+        		.peek(task -> {
+        			task.setReminderSent(true); // Set reminderSent to true
+        			taskRepository.save(task); // Save the updated task to the database
+        		}).collect(Collectors.toList());
+    }
 }

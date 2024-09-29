@@ -123,7 +123,8 @@ function validateForm() {
     if (reminderCheckbox.checked) {
         let reminderTime = document.forms["eventForm"]["reminderTime"].value;
         let now = new Date().toISOString();
-        if (reminderTime < now) {
+        let reminderTimeISO = new Date(reminderTime).toISOString(); 
+        if (reminderTimeISO <= now) {
             alert("Reminder time must be in the future.");
             return false;
         }

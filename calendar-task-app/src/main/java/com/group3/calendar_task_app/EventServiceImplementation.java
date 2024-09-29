@@ -118,6 +118,7 @@ public class EventServiceImplementation implements EventService {
 	                recurringEvent.setRecurrenceType(event.getRecurrenceType());
 	                recurringEvent.setReminder(event.isReminder());
 	                recurringEvent.setReminderTime(event.getReminderTime());
+	                recurringEvent.setReminderSent(false);
 
 	                if (!event.getDate().equals(recurringEvent.getDate())) {
 		                eventRepository.save(recurringEvent);
@@ -151,6 +152,16 @@ public class EventServiceImplementation implements EventService {
 		}
 		if (Objects.nonNull(event.getLocation()) && !"".equalsIgnoreCase(event.getLocation())) {
 			eventDB.setLocation(event.getLocation());
+		}
+		
+		if (Objects.nonNull(event.isReminder()) && Objects.nonNull(event.getReminderTime())) {
+			eventDB.setReminder(event.isReminder());
+			eventDB.setReminderTime(event.getReminderTime());
+			eventDB.setReminderSent(false);
+		}
+		
+		if (!Objects.nonNull(event.isReminder())) {
+			eventDB.setReminder(false);
 		}
 		
 		return eventRepository.save(eventDB);

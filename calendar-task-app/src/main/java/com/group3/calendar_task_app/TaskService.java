@@ -21,4 +21,6 @@ public interface TaskService {
     public List<Task> filterTasksByCategory(String category);
     List<Task> getAllTasks();
 
+	List<Task> getReminders();
+
 }

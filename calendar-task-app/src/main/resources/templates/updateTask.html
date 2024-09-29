@@ -4,7 +4,16 @@
     <title>Update Task</title>
 </head>
 <body>
-
+  <script>
+  	function toggleReminderDateTime(checkbox) {
+  		var reminderDiv = document.getElementById("reminderDateTime");
+  		if (checkbox.checked) {
+  			reminderDiv.style.display = "block";
+  		} else {
+  			reminderDiv.style.display = "none";
+  		}
+  	}
+  </script>
 <script>
 function validateForm() {
     let title = document.forms["taskForm"]["title"].value;
@@ -15,6 +24,20 @@ function validateForm() {
     if (title === "" || date === "" || category === "") {
         alert("All required fields must be filled out.");
         return false;
+    }
+    let reminderCheckbox = document.getElementById("reminderCheckbox");
+    if (reminderCheckbox.checked) {
+        let reminderTime = document.forms["taskForm"]["reminderTime"].value;
+        let now = new Date().toISOString();
+        let reminderTimeISO = new Date(reminderTime).toISOString(); 
+        if (reminderTimeISO <= now) {
+            alert("Reminder time must be in the future.");
+            return false;
+        }
+        if (reminderTime > date) {
+        	alert("Reminder time must be before the event date.");
+        	return false;
+        }
     }
 }
 </script>
@@ -28,6 +51,13 @@ function validateForm() {
     <p style="color: #fff; padding: 10px;">Date: <input type="datetime-local" th:field="*{date}" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px; width: 100%;"></p>
     <p style="color: #fff; padding: 10px;">Complete?: <input type="checkbox" th:field="*{complete}" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px;"></p>
     <p style="color: #fff; padding: 10px;">Category: <input type="text" th:field="*{category}" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px; width: 100%;"></p>
+        <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
+    	
+    	<div id="reminderDateTime" style="display: none;">
+    		<p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+    		<input type="hidden" name="reminderSent" value="false">
+    		
+    	</div>
     <input type="submit" value="Update Task" style="background-color: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
   </form>
 </div>
