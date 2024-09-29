@@ -1,6 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.thymeleaf.org"
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Calendar Event/Task Manager</title>
@@ -35,43 +34,57 @@
       border: 1px solid #555; /* dark border */
     }
   
-    .dropdown {
+    .dropdown-container {
+      display: flex;
+      justify-content: space-between; /* Separate Create and View sections */
       background-color: #444; /* dark background */
-      border: 1px solid #555; /* dark border */
       padding: 10px;
+      border: 1px solid #555;
       border-radius: 5px;
+      margin-bottom: 20px;
     }
   
-    .dropdown label {
-      color: #fff; /* white text */
+    .dropdown h2 {
+      margin-bottom: 10px;
     }
-  
-    .dropdown select {
-      background-color: #444; /* dark background */
-      color: #fff; /* white text */
-      border: 1px solid #555; /* dark border */
-      padding: 10px;
-      border-radius: 5px;
+
+    .dropdown-options {
+      display: flex;
+      gap: 10px;
     }
-  
-    .dropdown option {
-      background-color: #444; /* dark background */
-      color: #fff; /* white text */
+
+    .create-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .view-section {
+      display: flex;
+      flex-direction: column;
     }
   </style>
 </head>
 <body>
     <h1>Calendar Event/Task Manager</h1>
     <div class="container">
-        <div class="dropdown">
-            <h2>Create</h2>
-            <div class="dropdown-options">
-              <a href ="/events"><button>Event</button></a>
-              <a href="/tasks"><button>Task</button></a>
-              <a href="/events/table"><button>Event List</button></a>
-              <a href="/tasks/table"><button>Task List</button></a>
+        <div class="dropdown-container">
+            <div class="create-section">
+                <h2>Create</h2>
+                <div class="dropdown-options">
+                  <a href ="/events"><button>Event</button></a>
+                  <a href="/tasks"><button>Task</button></a>
+                </div>
+            </div>
+            
+            <div class="view-section">
+                <h2>View</h2>
+                <div class="dropdown-options">
+                  <a href="/events/table"><button>Event List</button></a>
+                  <a href="/tasks/table"><button>Task List</button></a>
+                </div>
             </div>
         </div>
+
         <div id='calendar' th:id="calendar"></div>
     </div>
 

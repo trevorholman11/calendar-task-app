@@ -2,71 +2,144 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Task</title>
-</head>
-<body>
-  <script>
-  	function toggleReminderDateTime(checkbox) {
-  		var reminderDiv = document.getElementById("reminderDateTime");
-  		if (checkbox.checked) {
-  			reminderDiv.style.display = "block";
-  		} else {
-  			reminderDiv.style.display = "none";
-  		}
-  	}
-  </script>
-<script>
-function validateForm() {
-    let title = document.forms["taskForm"]["title"].value;
-    let date = document.forms["taskForm"]["date"].value;
-    let category = document.forms["taskForm"]["category"].value;
-    let priority = document.forms["taskForm"]["priority"].value;
+  <style>
+    body {
+      background-color: #333; /* dark background */
+      text-align: center;
+      font-family: 'Century Schoolbook', serif;
+      color: #fff; /* white text */
+    }
 
-    if (title === "" || date === "" || category === "") {
+    header {
+      background-color: #444; /* dark background */
+      color: #fff; /* white text */
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #444; /* dark background */
+      border: 1px solid #555; /* dark border */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    h2 {
+      border-radius: 10px 10px 0 0;
+      background-color: #333; /* dark background */
+      padding: 10px;
+      margin-bottom: 20px;
+      color: #fff; /* white text */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="number"], input[type="datetime-local"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #444; /* dark background */
+      color: #fff; /* white text */
+      border: 1px solid #555; /* dark border */
+      border-radius: 5px;
+    }
+
+    input[type="checkbox"] {
+      margin-bottom: 20px;
+    }
+
+    input[type="submit"], .home-link {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    input[type="submit"]:hover, .home-link:hover {
+      background-color: #0056b3; /* Darker shade on hover */
+    }
+
+  </style>
+  <script>
+    function toggleReminderDateTime(checkbox) {
+      var reminderDiv = document.getElementById("reminderDateTime");
+      if (checkbox.checked) {
+        reminderDiv.style.display = "block";
+      } else {
+        reminderDiv.style.display = "none";
+      }
+    }
+  </script>
+  <script>
+    function validateForm() {
+      let title = document.forms["taskForm"]["title"].value;
+      let date = document.forms["taskForm"]["date"].value;
+      let category = document.forms["taskForm"]["category"].value;
+      let priority = document.forms["taskForm"]["priority"].value;
+
+      if (title === "" || date === "" || category === "") {
         alert("All required fields must be filled out.");
         return false;
-    }
-    
-    let reminderCheckbox = document.getElementById("reminderCheckbox");
-    if (reminderCheckbox.checked) {
+      }
+      
+      let reminderCheckbox = document.getElementById("reminderCheckbox");
+      if (reminderCheckbox.checked) {
         let reminderTime = document.forms["taskForm"]["reminderTime"].value;
         let now = new Date().toISOString();
-        let reminderTimeISO = new Date(reminderTime).toISOString(); 
+        let reminderTimeISO = new Date(reminderTime).toISOString();
         if (reminderTimeISO <= now) {
-            alert("Reminder time must be in the future.");
-            return false;
+          alert("Reminder time must be in the future.");
+          return false;
         }
         if (reminderTime > date) {
-        	alert("Reminder time must be before the event date.");
-        	return false;
+          alert("Reminder time must be before the task date.");
+          return false;
         }
+      }
     }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Tasks</h1>
+  </header>
+  
+  <div class="container">
+    <h2>Add Task</h2>
+    <form name="taskForm" action="#" th:action="@{/tasks}" th:object="${task}" method="post" onsubmit="return validateForm()">
+      <p>Title: <input type="text" th:field="*{title}"/></p>
+      <p>Priority: <input type="number" th:field="*{priority}" min="1" max="3"/></p>
+      <p>Date: <input type="datetime-local" th:field="*{date}"/></p>
+      <p>Complete?: <input type="checkbox" th:field="*{complete}" value="true"/></p>
+      <p>Category: <input type="text" th:field="*{category}"/></p>
 
-}
-</script>
+      <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
+      
+      <div id="reminderDateTime" style="display: none;">
+        <p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+        <input type="hidden" id="reminderSent" name="reminderSent" value="false">
+      </div>
 
-<h1 style="text-align: center; color: #fff; background-color: #333; padding: 20px; border-radius: 10px;">Add Task</h1>
-
-<div style="display: flex; justify-content: center; margin-top: 40px;">
-  <form name="taskForm" action="#" th:action="@{/tasks}" th:object="${task}" method="post" onsubmit="return validateForm()" style="background-color: #444; border: 1px solid #555; border-radius: 10px; padding: 20px;">
-    <p style="color: #fff; padding: 10px;">Title: <input type="text" th:field="*{title}" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px; width: 100%;"></p>
-    <p style="color: #fff; padding: 10px;">Priority: <input type="number" th:field="*{priority}" min="1" max="3" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px; width: 100%;"></p>
-    <p style="color: #fff; padding: 10px;">Date: <input type="datetime-local" th:field="*{date}" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px; width: 100%;"></p>
-    <p style="color: #fff; padding: 10px;">Complete?: <input type="checkbox" th:field="*{complete}" value="true" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px;"></p>
-    <p style="color: #fff; padding: 10px;">Category: <input type="text" th:field="*{category}" style="background-color: #333; color: #fff; padding: 10px; border: none; border-radius: 5px; width: 100%;"></p>
-    <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
-    	
-    	<div id="reminderDateTime" style="display: none;">
-    		<p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
-    		<input type="hidden" id="reminderSent" name="reminderSent" value="false">
-    	</div>
-    <input type="submit" value="Add Task" style="background-color: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-  </form>
-</div>
-
-<div style="text-align: center; margin-top: 40px;">
-  <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/">Home</a>
-  <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/tasks/list">View All Tasks</a>
-</div>
+      <input type="submit" value="Add Task"/>
+      <a href="/" class="home-link">Home</a>
+    </form>
+  </div>
 
 </body>
 </html>
