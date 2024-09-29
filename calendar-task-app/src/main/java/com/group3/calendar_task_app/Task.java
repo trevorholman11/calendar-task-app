@@ -1,6 +1,6 @@
 package com.group3.calendar_task_app;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,16 +13,12 @@ public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
 	private String title;
 	private int priority; // 1: High, 2: Medium, 3: Low
-	private LocalDate date;
+   	private LocalDateTime date;
 	private boolean complete;
 	private String category; // e.g., Work, Personal, Urgent
-	
-	/*
-	@ManyToOne
-	private Person person;
-	*/
 	
 	// No argument constructor is needed for Jarkarta
 	public Task() {}
@@ -49,11 +45,11 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

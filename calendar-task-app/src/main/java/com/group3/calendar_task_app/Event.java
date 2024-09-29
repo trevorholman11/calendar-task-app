@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 // Jakarta Persistence offers object/relational mapping
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 @Entity
 public class Event {
@@ -20,13 +19,10 @@ public class Event {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id; 
 	
-    @NotBlank(message = "Title is required")
 	private String title;
     
-    @NotNull(message = "Date is required")
     private LocalDateTime date;
     
-    @NotBlank(message = "Category is required")
 	private String category; // e.g., Work, Personal, Urgent
 	private String location;
 	
