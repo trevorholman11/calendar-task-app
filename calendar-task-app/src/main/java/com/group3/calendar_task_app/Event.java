@@ -7,11 +7,11 @@
 
 package com.group3.calendar_task_app;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 // Jakarta Persistence offers object/relational mapping
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Event {
@@ -19,26 +19,26 @@ public class Event {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id; 
+	
+    @NotBlank(message = "Title is required")
 	private String title;
-	private LocalDate date;
-	private String time;
+    
+    @NotNull(message = "Date is required")
+    private LocalDateTime date;
+    
+    @NotBlank(message = "Category is required")
 	private String category; // e.g., Work, Personal, Urgent
 	private String location;
 	
     // Recurring event fields
     private boolean recurring;
     private String recurrenceType; // daily, weekly, monthly, yearly
-    private LocalDate recurrenceEndDate;
+    private LocalDateTime recurrenceEndDate;
 
     // Reminder fields
     private boolean reminder;
     private LocalDateTime reminderTime;
     private boolean reminderSent;
-	/*
-	 *	@ManyToOne
-	private Person person;
-
-	 */
 
 	// No argument constructor is needed for Jarkarta
 	public Event() {}
@@ -62,20 +62,12 @@ public class Event {
 		this.title = title;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 	public boolean isRecurring() {
@@ -126,11 +118,11 @@ public class Event {
 		this.recurrenceType = recurrenceType;
 	}
 
-	public LocalDate getRecurrenceEndDate() {
+	public LocalDateTime getRecurrenceEndDate() {
 		return recurrenceEndDate;
 	}
 
-	public void setRecurrenceEndDate(LocalDate recurrenceEndDate) {
+	public void setRecurrenceEndDate(LocalDateTime recurrenceEndDate) {
 		this.recurrenceEndDate = recurrenceEndDate;
 	}
 

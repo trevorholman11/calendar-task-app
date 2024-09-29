@@ -88,6 +88,44 @@
   		}
   	}
   </script>
+<script>
+function validateForm() {
+    let title = document.forms["eventForm"]["title"].value;
+    let date = document.forms["eventForm"]["date"].value;
+    let category = document.forms["eventForm"]["category"].value;
+
+    if (title === "" || date === "" || category === "") {
+        alert("All required fields must be filled out.");
+        return false;
+    }
+
+    let reminderCheckbox = document.getElementById("reminderCheckbox");
+    if (reminderCheckbox.checked) {
+        let reminderTime = document.forms["eventForm"]["reminderTime"].value;
+        let now = new Date().toISOString();
+        if (reminderTime < now) {
+            alert("Reminder time must be in the future.");
+            return false;
+        }
+        if (reminderTime > date) {
+        	alert("Reminder time must be before the event date.");
+        	return false;
+        }
+    }
+
+    let recurringCheckbox = document.getElementById("recurringCheckbox");
+    if (recurringCheckbox.checked) {
+        let recurrenceEndDate = document.forms["eventForm"]["recurrenceEndDate"].value;
+        if (recurrenceEndDate <= date) {
+            alert("Recurrence end date must be after the event date.");
+            return false;
+        }
+    }
+    
+}
+</script>
+
+  
  
 </head>
 <body>
@@ -96,10 +134,9 @@
   </header>
   <div class="container">
     <h2>Add Event</h2>
-    <form action="#" th:action="@{/events}" th:object="${event}" method="post">
+    <form name="eventForm" action="#" th:action="@{/events}" th:object="${event}" method="post" onsubmit="return validateForm()">
     <p>Title: <input type="text" th:field="*{title}"/></p>
-    <p>Date: <input type="date" th:field="*{date}"/></p>
-    <p>Time: <input type="text" th:field="*{time}"/></p>
+    <p>Date: <input type="datetime-local" th:field="*{date}"/></p>
     <p>Category: <input type="text" th:field="*{category}"/></p>
     <p>Location: <input type="text" th:field="*{location}"/></p>
 
@@ -114,7 +151,7 @@
                 <option value="yearly">Yearly</option>
             </select>
         </p>
-        <p>Recurrence End Date: <input type="date" th:field="*{recurrenceEndDate}"/></p>
+        <p>Recurrence End Date: <input type="datetime-local" th:field="*{recurrenceEndDate}"/></p>
       </div>
 
     <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>

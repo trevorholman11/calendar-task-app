@@ -97,8 +97,7 @@
     <h2>Add Event</h2>
     <form th:action="@{/events/update/{id}(id=${event.id})}" th:object="${event}" method="post">
     <p>Title: <input type="text" th:field="*{title}"/></p>
-    <p>Date: <input type="date" th:field="*{date}"/></p>
-    <p>Time: <input type="text" th:field="*{time}"/></p>
+    <p>Date: <input type="datetime-local" th:field="*{date}"/></p>
     <p>Category: <input type="text" th:field="*{category}"/></p>
     <p>Location: <input type="text" th:field="*{location}"/></p>
 
@@ -113,7 +112,7 @@
                 <option value="yearly">Yearly</option>
             </select>
         </p>
-        <p>Recurrence End Date: <input type="date" th:field="*{recurrenceEndDate}"/></p>
+        <p>Recurrence End Date: <input type="datetime-local" th:field="*{recurrenceEndDate}"/></p>
       </div>
 
     <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>

@@ -23,14 +23,13 @@ public class EventServiceImplementation implements EventService {
     @Override
     public Event saveEvent(Event event) {
         if (event.isRecurring()) {
-            LocalDate startDate = event.getDate();
-            LocalDate endDate = event.getRecurrenceEndDate();
+            LocalDateTime startDate = event.getDate();
+            LocalDateTime endDate = event.getRecurrenceEndDate();
             
             while (!startDate.isAfter(endDate)) {
                 Event recurringEvent = new Event();
                 recurringEvent.setTitle(event.getTitle());
                 recurringEvent.setDate(startDate);
-                recurringEvent.setTime(event.getTime());
                 recurringEvent.setCategory(event.getCategory());
                 recurringEvent.setLocation(event.getLocation());
                 recurringEvent.setRecurring(event.isRecurring());
@@ -113,19 +112,16 @@ public class EventServiceImplementation implements EventService {
 		if (Objects.nonNull(event.getDate())) {
 			eventDB.setDate(event.getDate());
 		}
-		if (Objects.nonNull(event.getTime()) && !"".equalsIgnoreCase(event.getTime())) {
-			eventDB.setTime(event.getTime());
-		}
+
 		if (Objects.nonNull(event.isRecurring())) {
 			eventDB.setRecurring(event.isRecurring());
 			if (event.isRecurring()) {
-	            LocalDate startDate = event.getDate();
-	            LocalDate endDate = event.getRecurrenceEndDate();
+	            LocalDateTime startDate = event.getDate();
+	            LocalDateTime endDate = event.getRecurrenceEndDate();
 				while (!startDate.isAfter(endDate)) {
 	                Event recurringEvent = new Event();
 	                recurringEvent.setTitle(event.getTitle());
 	                recurringEvent.setDate(startDate);
-	                recurringEvent.setTime(event.getTime());
 	                recurringEvent.setCategory(event.getCategory());
 	                recurringEvent.setLocation(event.getLocation());
 	                recurringEvent.setRecurring(event.isRecurring());
