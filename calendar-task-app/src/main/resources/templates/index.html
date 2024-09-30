@@ -16,7 +16,27 @@
   <script src="http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.min.js"
           th:src="@{/webjars/fullcalendar/2.2.5/fullcalendar.min.js}" type="text/javascript"></script>
   <link rel="stylesheet" type="text/css" href="dropDownButton.css">
-  
+  <script>
+  	function formatLocalDateTime(dateTimeString) {
+    // Create a Date object from the LocalDateTime string
+    const dateTime = new Date(dateTimeString);
+
+    // Define options for formatting the date and time
+    const options = {
+        weekday: 'long', // Full weekday name
+        year: 'numeric', // Full year
+        month: 'long', // Full month name
+        day: 'numeric', // Day of the month
+        hour: 'numeric', // Hour (12-hour format)
+        minute: 'numeric', // Minutes
+        second: 'numeric', // Seconds
+        hour12: true // 12-hour format with AM/PM
+    };
+
+    // Convert to a readable format
+    return dateTime.toLocaleString('en-US', options);
+}
+  	</script>
   <style>
     body {
       margin: 40px 10px;
@@ -124,7 +144,8 @@
       .then(reminders => {
         reminders.forEach(reminder => {
           // Display a pop-up notification for each reminder
-          alert(`Event Reminder: ${reminder.title} is happening on ${reminder.date}`);
+          const formattedDate = formatLocalDateTime(reminder.date);
+          alert(`Event Reminder: ${reminder.title} is happening on ${formattedDate}`);
         });
       });
       
@@ -133,7 +154,8 @@
       .then(reminders => {
         reminders.forEach(reminder => {
           // Display a pop-up notification for each reminder
-          alert(`Task Reminder: ${reminder.title} is happening on ${reminder.date}`);
+          const formattedDate = formatLocalDateTime(reminder.date);
+          alert(`Task Reminder: ${reminder.title} is happening on ${formatteDate}`);
         });
       });
   }, 60000); // 60 seconds

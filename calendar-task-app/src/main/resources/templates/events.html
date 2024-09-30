@@ -115,7 +115,7 @@ function validateForm() {
     let category = document.forms["eventForm"]["category"].value;
 
     if (title === "" || date === "" || category === "") {
-        alert("All required fields must be filled out.");
+        alert("Title, Date, and Category are required.");
         return false;
     }
 
@@ -159,7 +159,7 @@ function validateForm() {
     <p>Title: <input type="text" th:field="*{title}"/></p>
     <p>Date: <input type="datetime-local" th:field="*{date}"/></p>
     <p>Category: <input type="text" th:field="*{category}"/></p>
-    <p>Location: <input type="text" th:field="*{location}"/></p>
+    <p>Location: <input type="text" placeholder="optional" th:field="*{location}"/></p>
 
 	<p>Recurring? <input type="checkbox" id="recurringCheckbox" th:field="*{recurring}" value="true" onclick="toggleRecurrenceOptions(this)"/></p>
 
