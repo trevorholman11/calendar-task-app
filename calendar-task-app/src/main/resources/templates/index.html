@@ -18,7 +18,7 @@
          th:src="@{/webjars/fullcalendar/2.2.5/fullcalendar.min.js}" type="text/javascript"></script>
       <link rel="stylesheet" type="text/css" href="dropDownButton.css">
       <script>
-         // Formates the local date time into human readable content
+         // Formats the local date time into human readable content
          function formatLocalDateTime(dateTimeString) {
          const dateTime = new Date(dateTimeString);
          
@@ -107,7 +107,7 @@
              header: {
                left: 'prev,next today',
                center: 'title',
-               right: 'month,agendaWeek,agendaDay'
+               right: ''
              },
          defaultDate: moment().format('YYYY-MM-DD'),
              editable: true,
@@ -119,11 +119,20 @@
                  $.getJSON('/tasks/list')
                ).done(function(eventsData, tasksData) {
                  // Combine both events and tasks into one array
-                 var combinedData = eventsData[0].concat(tasksData[0]);
+                 var combinedData = eventsData[0].map(event => ({ ...event, type: 'event' }))
+                                     .concat(tasksData[0].map(task => ({ ...task, type: 'task' })));
                  callback(combinedData);
                }).fail(function() {
                  alert('There was an error while fetching events or tasks!');
                });
+             } ,
+             eventClick: function(event) {
+               // Check if it's an event or task and redirect
+               if (event.type === 'event') {
+                   window.location.href = '/events/' + event.id;
+               } else if (event.type === 'task') {
+                   window.location.href = '/tasks/' + event.id;
+               }
              }
            });
          });

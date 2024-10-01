@@ -97,6 +97,22 @@ public class CalendarController {
         model.addAttribute("events", events);
         return "eventList";  
     }
+    
+    /**
+     * Displays an event based on its ID
+     */
+    @GetMapping("/events/{id}")
+    public String showEvent(@PathVariable long id, Model model) {
+        Optional<Event> eventOptional = eventService.fetchEventById(id);
+
+        //Check to see if the event was found
+        if (eventOptional.isPresent()) {
+            model.addAttribute("event", eventOptional.get());  // get the actual event, not optional one
+            return "eventResults";  
+        } else {
+            return "redirect:/events/table"; // If no event then redirect
+        }
+    }
 
     /**
      * Displays the form for updating an event
@@ -242,6 +258,22 @@ public class CalendarController {
     public List<Task> getTaskReminders() {
         List<Task> reminders = taskService.getReminders();
         return reminders;
+    }
+    
+    /**
+     * Displays an event based on its ID
+     */
+    @GetMapping("/tasks/{id}")
+    public String showTask(@PathVariable long id, Model model) {
+        Optional<Task> taskOptional = taskService.fetchTaskById(id);
+
+        //Check to see if the event was found
+        if (taskOptional.isPresent()) {
+            model.addAttribute("task", taskOptional.get());  // get the actual event, not optional one
+            return "taskResults";  
+        } else {
+            return "redirect:/tasks/table"; // If no event then redirect
+        }
     }
     
 }
