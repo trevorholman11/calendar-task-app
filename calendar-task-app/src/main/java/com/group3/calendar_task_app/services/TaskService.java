@@ -15,8 +15,6 @@ public interface TaskService {
 	
 	/**
 	 * Saves a task in the database
-	 * @param task
-	 * @return
 	 */
 	Task saveTask(Task task);
 	

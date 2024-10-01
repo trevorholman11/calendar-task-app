@@ -56,7 +56,8 @@ public class Event {
 	/**
 	 * Sets event ID
 	 * 
-	 * To be used when updating events
+	 * To be used when updating recurring events so duplicates are not produeced
+	 * TECH DEBT: Likely not a good idea to be able to change the unique Identifier 
 	 */
 	public void setId(long id) {
 		this.id = id;
