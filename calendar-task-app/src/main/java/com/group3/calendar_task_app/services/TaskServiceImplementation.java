@@ -43,13 +43,16 @@ public class TaskServiceImplementation implements TaskService {
 	}
 	
 	/**
-	 * 
+	 * Returns a specific task based on its unique ID
 	 */
 	@Override
 	public Optional<Task> fetchTaskById(Long taskID) {
 		return taskRepository.findById(taskID);
 	}
 
+	/**
+	 * Updates a specific task based on its unique ID
+	 */
 	@Override
 	public Task updateTask(Task task, Long taskID) {
 		Task taskDB = taskRepository.findById(taskID).get();
@@ -69,36 +72,47 @@ public class TaskServiceImplementation implements TaskService {
 		if (Objects.nonNull(task.getCategory()) && !"".equalsIgnoreCase(task.getCategory())) {
 			taskDB.setCategory(task.getCategory());
 		}
+		// Resets the reminder for the task
 		if (Objects.nonNull(task.isReminder()) && Objects.nonNull(task.getReminderTime())) {
 			taskDB.setReminder(task.isReminder());
 			taskDB.setReminderTime(task.getReminderTime());
 			taskDB.setReminderSent(false);
 		}
-		
 		if (!Objects.nonNull(task.isReminder())) {
 			taskDB.setReminder(false);
 		}
 		return taskRepository.save(taskDB);
 	}
 
+	/**
+	 * Deletes a specific task based on its unique ID
+	 */
 	@Override
 	public void deleteTaskById(Long taskID) {
 		
 		taskRepository.deleteById(taskID);
 	}
 	
+    /**
+     * Retrieves tasks based on the supplied category
+     */
     @Override
     public List<Task> filterTasksByCategory(String category) {
         return taskRepository.findByCategory(category);
     }
-
+    
+    /**
+     * Returns a list of all tasks with reminders that are due, marking them as sent when the reminder time is reached
+     */
     public List<Task> getReminders() {
         List<Task> tasks = taskRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
+        // Check if the reminderTime is before the current time to send the reminder
+        // Then mark the flag as sent so that it doesn't continue to send on every refresh after the reminder time is reached
         return tasks.stream()
         		.filter(task -> task.isReminder() && task.getReminderTime().isBefore(now) && !task.isReminderSent())            
         		.peek(task -> {
-        			task.setReminderSent(true); // Set reminderSent to true
+        			task.setReminderSent(true); // Set reminder sent flag to true
         			taskRepository.save(task); // Save the updated task to the database
         		}).collect(Collectors.toList());
     }
