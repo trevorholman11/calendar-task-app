@@ -1,191 +1,178 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
-  <title>Events</title>
-  <style>
-    body {
-      background-color: #333; /* dark background */
-      text-align: center; 
-      font-family: 'Century Schoolbook', serif;
-      color: #fff; /* white text */
-    }
-
-    header {
-      background-color: #444; /* dark background */
-      color: #fff; /* white text */
-      padding: 20px; 
-      text-align: center; 
-      border-radius: 10px 10px 0 0;
-    }
-
-    .container {
-      max-width: 600px; 
-      margin: 40px auto; 
-      padding: 20px; 
-      background-color: #444; /* dark background */
-      border: 1px solid #555; /* dark border */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-      border-radius: 10px;
-    }
-
-    h2 {
-      border-radius: 10px 10px 0 0; 
-      background-color: #333; /* dark background */
-      padding: 10px; 
-      margin-bottom: 20px;
-      color: #fff; /* white text */
-    }
-
-    form {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-    }
-
-    p {
-      margin-bottom: 20px;
-    }
-
-    input[type="text"], input[type="date"] {
-      padding: 10px; 
-      margin-bottom: 20px;
-      background-color: #444; /* dark background */
-      color: #fff; /* white text */
-      border: 1px solid #555; /* dark border */
-      border-radius: 5px;
-    }
-
-    input[type="checkbox"] {
-      margin-bottom: 20px;
-    }
-
-    input[type="submit"], .add-event {
-      background-color: #007bff; 
-      color: #fff; 
-      padding: 10px 20px; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer;
-    }
-    
-    .add-event:hover {
-    	background-color: #0056b3; /* Darker shade on hover */
-    }
-    
-    input[type="submit"], .home-link {
-      background-color: #007bff; 
-      color: #fff; 
-      padding: 10px 20px; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer;
-      text-decoration: none; 
-      display: inline-block; 
-      margin-top: 20px; 
-    }
-
-    .home-link:hover {
-      background-color: #0056b3; /* Darker shade on hover */
-    }
-  </style>
-  <script>
-    function toggleRecurrenceOptions(checkbox) {
-      var recurrenceDiv = document.getElementById("recurrenceOptions");
-      if (checkbox.checked) {
-        recurrenceDiv.style.display = "block";
-      } else {
-        recurrenceDiv.style.display = "none";
-      }
-    }
-  </script>
-  <script>
-  	function toggleReminderDateTime(checkbox) {
-  		var reminderDiv = document.getElementById("reminderDateTime");
-  		if (checkbox.checked) {
-  			reminderDiv.style.display = "block";
-  		} else {
-  			reminderDiv.style.display = "none";
-  		}
-  	}
-  </script>
-<script>
-function validateForm() {
-    let title = document.forms["eventForm"]["title"].value;
-    let date = document.forms["eventForm"]["date"].value;
-    let category = document.forms["eventForm"]["category"].value;
-
-    if (title === "" || date === "" || category === "") {
-        alert("Title, Date, and Category are required.");
-        return false;
-    }
-
-    let reminderCheckbox = document.getElementById("reminderCheckbox");
-    if (reminderCheckbox.checked) {
-        let reminderTime = document.forms["eventForm"]["reminderTime"].value;
-        let now = new Date().toISOString();
-        let reminderTimeISO = new Date(reminderTime).toISOString(); 
-        if (reminderTimeISO <= now) {
-            alert("Reminder time must be in the future.");
-            return false;
-        }
-        if (reminderTime > date) {
-        	alert("Reminder time must be before the event date.");
-        	return false;
-        }
-    }
-
-    let recurringCheckbox = document.getElementById("recurringCheckbox");
-    if (recurringCheckbox.checked) {
-        let recurrenceEndDate = document.forms["eventForm"]["recurrenceEndDate"].value;
-        if (recurrenceEndDate <= date) {
-            alert("Recurrence end date must be after the event date.");
-            return false;
-        }
-    }
-    
-}
-</script>
-
-  
- 
-</head>
-<body>
-  <header>
-    <h1>Events</h1>
-  </header>
-  <div class="container">
-    <h2>Add Event</h2>
-    <form name="eventForm" action="#" th:action="@{/events}" th:object="${event}" method="post" onsubmit="return validateForm()">
-    <p>Title: <input type="text" th:field="*{title}"/></p>
-    <p>Date: <input type="datetime-local" th:field="*{date}"/></p>
-    <p>Category: <input type="text" th:field="*{category}"/></p>
-    <p>Location: <input type="text" placeholder="optional" th:field="*{location}"/></p>
-
-	<p>Recurring? <input type="checkbox" id="recurringCheckbox" th:field="*{recurring}" value="true" onclick="toggleRecurrenceOptions(this)"/></p>
-
-      <div id="recurrenceOptions" style="display: none;">
-      	<p>Recurrence Type: 
-            <select th:field="*{recurrenceType}">
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-            </select>
-        </p>
-        <p>Recurrence End Date: <input type="datetime-local" th:field="*{recurrenceEndDate}"/></p>
+   <head>
+      <title>Events</title>
+      <style>
+         body {
+         background-color: #333; /* dark background */
+         text-align: center; 
+         font-family: 'Century Schoolbook', serif;
+         color: #fff; /* white text */
+         }
+         header {
+         background-color: #444; /* dark background */
+         color: #fff; /* white text */
+         padding: 20px; 
+         text-align: center; 
+         border-radius: 10px 10px 0 0;
+         }
+         .container {
+         max-width: 600px; 
+         margin: 40px auto; 
+         padding: 20px; 
+         background-color: #444; /* dark background */
+         border: 1px solid #555; /* dark border */
+         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+         border-radius: 10px;
+         }
+         h2 {
+         border-radius: 10px 10px 0 0; 
+         background-color: #333; /* dark background */
+         padding: 10px; 
+         margin-bottom: 20px;
+         color: #fff; /* white text */
+         }
+         form {
+         display: flex; 
+         flex-direction: column; 
+         align-items: center;
+         }
+         p {
+         margin-bottom: 20px;
+         }
+         input[type="text"], input[type="date"] {
+         padding: 10px; 
+         margin-bottom: 20px;
+         background-color: #444; /* dark background */
+         color: #fff; /* white text */
+         border: 1px solid #555; /* dark border */
+         border-radius: 5px;
+         }
+         input[type="checkbox"] {
+         margin-bottom: 20px;
+         }
+         input[type="submit"], .add-event {
+         background-color: #007bff; 
+         color: #fff; 
+         padding: 10px 20px; 
+         border: none; 
+         border-radius: 5px; 
+         cursor: pointer;
+         }
+         .add-event:hover {
+         background-color: #0056b3; /* Darker shade on hover */
+         }
+         input[type="submit"], .home-link {
+         background-color: #007bff; 
+         color: #fff; 
+         padding: 10px 20px; 
+         border: none; 
+         border-radius: 5px; 
+         cursor: pointer;
+         text-decoration: none; 
+         display: inline-block; 
+         margin-top: 20px; 
+         }
+         .home-link:hover {
+         background-color: #0056b3; /* Darker shade on hover */
+         }
+      </style>
+      <script>
+         // Toggles the recurrence options when the checkbox is selected
+         function toggleRecurrenceOptions(checkbox) {
+           var recurrenceDiv = document.getElementById("recurrenceOptions");
+           if (checkbox.checked) {
+             recurrenceDiv.style.display = "block";
+           } else {
+             recurrenceDiv.style.display = "none";
+           }
+         }
+      </script>
+      <script>
+         // Toggles the reminder options when the checkbox is selected
+         function toggleReminderDateTime(checkbox) {
+         	var reminderDiv = document.getElementById("reminderDateTime");
+         	if (checkbox.checked) {
+         		reminderDiv.style.display = "block";
+         	} else {
+         		reminderDiv.style.display = "none";
+         	}
+         }
+      </script>
+      <script>
+         // Validates the input from the user and handles errors
+         function validateForm() {
+             let title = document.forms["eventForm"]["title"].value;
+             let date = document.forms["eventForm"]["date"].value;
+             let category = document.forms["eventForm"]["category"].value;
+         
+             if (title === "" || date === "" || category === "") {
+                 alert("Title, Date, and Category are required.");
+                 return false;
+             }
+         
+             let reminderCheckbox = document.getElementById("reminderCheckbox");
+             if (reminderCheckbox.checked) {
+                 let reminderTime = document.forms["eventForm"]["reminderTime"].value;
+                 if (reminderTime === "") {
+                    alert("Reminder time cannot be blank");
+                    return false;
+                 }
+                 let now = new Date().toISOString();
+                 let reminderTimeISO = new Date(reminderTime).toISOString(); 
+                 if (reminderTimeISO <= now) {
+                     alert("Reminder time must be in the future.");
+                     return false;
+                 }
+                 if (reminderTime > date) {
+                 	alert("Reminder time must be before the event date.");
+                 	return false;
+                 }
+             }
+         
+             let recurringCheckbox = document.getElementById("recurringCheckbox");
+             if (recurringCheckbox.checked) {
+                 let recurrenceEndDate = document.forms["eventForm"]["recurrenceEndDate"].value;
+                 if (recurrenceEndDate <= date || recurrenceEndDate === "") {
+                     alert("Recurrence end date must be after the event date.");
+                     return false;
+                 }
+             }
+         }
+      </script>
+   </head>
+   <body>
+      <header>
+         <h1>Events</h1>
+      </header>
+      <div class="container">
+         <h2>Add Event</h2>
+         <form name="eventForm" action="#" th:action="@{/events}" th:object="${event}" method="post" onsubmit="return validateForm()">
+            <p>Title: <input type="text" th:field="*{title}"/></p>
+            <p>Date: <input type="datetime-local" th:field="*{date}"/></p>
+            <p>Category: <input type="text" th:field="*{category}"/></p>
+            <p>Location: <input type="text" placeholder="optional" th:field="*{location}"/></p>
+            <p>Recurring? <input type="checkbox" id="recurringCheckbox" th:field="*{recurring}" value="true" onclick="toggleRecurrenceOptions(this)"/></p>
+            <div id="recurrenceOptions" style="display: none;">
+               <p>
+                  Recurrence Type: 
+                  <select th:field="*{recurrenceType}">
+                     <option value="daily">Daily</option>
+                     <option value="weekly">Weekly</option>
+                     <option value="monthly">Monthly</option>
+                     <option value="yearly">Yearly</option>
+                  </select>
+               </p>
+               <p>Recurrence End Date: <input type="datetime-local" th:field="*{recurrenceEndDate}"/></p>
+            </div>
+            <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
+            <div id="reminderDateTime" style="display: none;">
+               <p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
+               <input type="hidden" id="reminderSent" name="reminderSent" value="false">
+            </div>
+            <input type="submit" class="add-event" value="Add Event"/>
+            <a href="/" class="home-link">Home</a>
+         </form>
       </div>
-
-    <p>Set Reminder? <input type="checkbox" id="reminderCheckbox" th:field="*{reminder}" value="true" onclick="toggleReminderDateTime(this)"/></p>
-    	
-    	<div id="reminderDateTime" style="display: none;">
-    		<p>Reminder Time: <input type="datetime-local" th:field="*{reminderTime}"/></p>
-    		<input type="hidden" id="reminderSent" name="reminderSent" value="false">
-    	</div>
-
-    <input type="submit" class="add-event" value="Add Event"/>
-    <a href="/" class="home-link">Home</a>
-</form>
-
-  </div>
-</body>
+   </body>
 </html>

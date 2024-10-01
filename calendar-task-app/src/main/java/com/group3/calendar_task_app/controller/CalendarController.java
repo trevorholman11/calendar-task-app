@@ -56,9 +56,9 @@ public class CalendarController {
      */
     @PostMapping("/events")
     public String eventSubmit(@ModelAttribute Event event, Model model) {
-        	eventService.saveEvent(event);
-        	model.addAttribute("event", event);
-        	return "/results";
+        eventService.saveEvent(event);
+        model.addAttribute("event", event);
+        return "/eventResults";
     }
     
     /**
@@ -160,7 +160,7 @@ public class CalendarController {
     public String taskSubmit(@ModelAttribute Task task, Model model) {
     	taskService.saveTask(task);
     	model.addAttribute("task", task);
-    	return "tresults";
+    	return "taskResults";
     }
     
     /**

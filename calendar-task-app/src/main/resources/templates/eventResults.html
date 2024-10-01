@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+   <head>
+      <title>Event Results</title>
+      <style>
+         body {
+         background-color: #333;
+         color: #fff;
+         text-align: center;
+         }
+         h1, p, a {
+         display: inline-block;
+         margin: 20px;
+         }
+      </style>
+   </head>
+   <body>
+      <style>
+         body {
+         background-color: #333;
+         color: #fff;
+         text-align: center;
+         }
+         h1, p, a {
+         display: inline-block;
+         margin: 20px;
+         }
+      </style>
+      <h1 style="text-align: center; color: #fff; background-color: #333; padding: 20px; border-radius: 10px;">Event</h1>
+      <div style="display: flex; justify-content: center; margin-top: 40px;">
+         <table style="background-color: #444; border: 1px solid #555; border-radius: 10px; padding: 20px;">
+            <thead>
+               <tr>
+                  <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Title</th>
+                  <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Date</th>
+                  <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Recurring</th>
+                  <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Category</th>
+                  <th style="background-color: #333; color: #fff; padding: 10px; border-radius: 10px;">Location</th>
+               </tr>
+            </thead>
+            <tbody>
+               <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;"th:text="${event.title}" /></td>
+               <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;"th:text="${event.date}" /></td>
+               <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;"th:text="${event.recurring}" /></td>
+               <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;"th:text="${event.category}" /></td>
+               <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px;"th:text="${event.location}" /></td>
+               <td style="background-color: #444; color: #fff; padding: 10px; border-radius: 10px; display: flex; flex-direction: column; align-items: center;"></td>
+            </tbody>
+         </table>
+      </div>
+      <div style="text-align: center; margin-top: 40px;">
+         <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/events">Create New Event</a>
+         <a style="text-decoration: none; color: #333; background-color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" href="/">Home</a>
+      </div>
+   </body>
+</html>
