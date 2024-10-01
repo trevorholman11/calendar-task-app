@@ -1,6 +1,11 @@
+/**
+ * This class manages the business logic related to Event entities, including saving,
+ * updating, deleting, and retrieving events. It interacts with the EventRepository to perform
+ * data access operations.
+ */
+
 package com.group3.calendar_task_app.services;
 /*
- * References: https://www.geeksforgeeks.org/spring-boot-with-h2-database/
  */
 
 import java.time.LocalDateTime;
@@ -16,18 +21,25 @@ import com.group3.calendar_task_app.models.Event;
 import com.group3.calendar_task_app.repositories.EventRepository;
 
 @Service
-
 public class EventServiceImplementation implements EventService {
 	
 	@Autowired
 	private EventRepository eventRepository;
 
+    /**
+     * Saves a new Event entity in the database. If the event is recurring, it creates
+     * and saves all instances of the recurring event based on the specified recurrence type
+     * until the recurrence end date is reached.
+     */
     @Override
     public Event saveEvent(Event event) {
+    	
+    	// Recurring event will need to be created individually
         if (event.isRecurring()) {
             LocalDateTime startDate = event.getDate();
             LocalDateTime endDate = event.getRecurrenceEndDate();
             
+            // Keep creating recurring events until the recurrenceEndDate is reached
             while (!startDate.isAfter(endDate)) {
                 Event recurringEvent = new Event();
                 recurringEvent.setTitle(event.getTitle());
@@ -42,18 +54,19 @@ public class EventServiceImplementation implements EventService {
 
                 eventRepository.save(recurringEvent);
 
+                // Check the type of the recurrence and add the corresponding amount to the start date
                 switch (event.getRecurrenceType()) {
                     case "daily":
-                        startDate = startDate.plusDays(1);
+                        startDate = startDate.plusDays(1);		// Adds 1 day to the start date
                         break;
                     case "weekly":
-                        startDate = startDate.plusWeeks(1);
+                        startDate = startDate.plusWeeks(1);		// Adds 1 week to the start date
                         break;
                     case "monthly":
-                        startDate = startDate.plusMonths(1);
+                        startDate = startDate.plusMonths(1);	// Adds 1 month to the start date
                         break;
                     case "yearly":
-                        startDate = startDate.plusYears(1);
+                        startDate = startDate.plusYears(1);		// Adds 1 year to the start date
                         break;
                 }
             }
@@ -63,37 +76,50 @@ public class EventServiceImplementation implements EventService {
         }
         return event;
     }
-    @Override
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
-    }
-
+ 
+    /**
+     * Retrieves events based on the supplied category
+     */
     @Override
     public List<Event> filterEventsByCategory(String category) {
         return eventRepository.findByCategory(category);
     }
 
+    /**
+     * Returns a list of all events with reminders that are due, marking them as sent when the reminder time is reached
+     */
     public List<Event> getReminders() {
         List<Event> events = eventRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
+        // Check if the reminderTime is before the current time to send the reminder
+        // Then mark the flag as sent so that it doesn't continue to send on every refresh after the reminder time is reached
         return events.stream()
         		.filter(event -> event.isReminder() && event.getReminderTime().isBefore(now) && !event.isReminderSent())            
         		.peek(event -> {
-        			event.setReminderSent(true); // Set reminderSent to true
+        			event.setReminderSent(true); // Set reminder sent flag to true
         			eventRepository.save(event); // Save the updated event to the database
         		}).collect(Collectors.toList());
     }
     
+    /**
+     * Returns a list of all events stored in the database
+     */
 	@Override
 	public List<Event> fetchEventList() {
 		return (List<Event>) eventRepository.findAll();
 	}
 	
+	/**
+	 * Returns a specific event based on the unique ID
+	 */
 	@Override
 	public Optional<Event> fetchEventById(Long eventID) {
 		return eventRepository.findById(eventID);
 	}
 
+	/**
+	 * Updates a specific event based on the unique ID
+	 */
 	@Override
 	public Event updateEvent(Event event, Long eventID) {
 		Event eventDB = eventRepository.findById(eventID).get();
@@ -107,6 +133,9 @@ public class EventServiceImplementation implements EventService {
 
 		if (Objects.nonNull(event.isRecurring())) {
 			eventDB.setRecurring(event.isRecurring());
+			
+			// Same logic here as the saveEvent() method
+			// Can likely pull out into another method for reuse
 			if (event.isRecurring()) {
 	            LocalDateTime startDate = event.getDate();
 	            LocalDateTime endDate = event.getRecurrenceEndDate();
@@ -157,6 +186,7 @@ public class EventServiceImplementation implements EventService {
 			eventDB.setLocation(event.getLocation());
 		}
 		
+		// Used to set a new reminder
 		if (Objects.nonNull(event.isReminder()) && Objects.nonNull(event.getReminderTime())) {
 			eventDB.setReminder(event.isReminder());
 			eventDB.setReminderTime(event.getReminderTime());
@@ -170,9 +200,11 @@ public class EventServiceImplementation implements EventService {
 		return eventRepository.save(eventDB);
 	}
 
+	/**
+	 * Deletes a specific event based on its unique ID
+	 */
 	@Override
 	public void deleteEventById(Long eventID) {
-		
 		eventRepository.deleteById(eventID);
 	}
 

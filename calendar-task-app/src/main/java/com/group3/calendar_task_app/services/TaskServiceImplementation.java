@@ -1,6 +1,11 @@
+/**
+ * This class manages the business logic related to Task entities, including saving,
+ * updating, deleting, and retrieving tasks. It interacts with the TaskRepository to perform
+ * data access operations.
+ */
+
 package com.group3.calendar_task_app.services;
 /*
- * References: https://www.geeksforgeeks.org/spring-boot-with-h2-database/
  */
 
 import java.time.LocalDateTime;
@@ -16,22 +21,30 @@ import com.group3.calendar_task_app.models.Task;
 import com.group3.calendar_task_app.repositories.TaskRepository;
 
 @Service
-
 public class TaskServiceImplementation implements TaskService {
 	
 	@Autowired
 	private TaskRepository taskRepository;
 
+    /**
+     * Saves a new Task entity in the database.
+     */
 	@Override
 	public Task saveTask(Task task) {
 		return taskRepository.save(task);
 	}
 
+	/**
+	 * Returns all tasks stored in the database
+	 */
 	@Override
 	public List<Task> fetchTaskList() {
 		return (List<Task>) taskRepository.findAll();
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public Optional<Task> fetchTaskById(Long taskID) {
 		return taskRepository.findById(taskID);
@@ -78,11 +91,6 @@ public class TaskServiceImplementation implements TaskService {
     public List<Task> filterTasksByCategory(String category) {
         return taskRepository.findByCategory(category);
     }
-
-	@Override
-	public List<Task> getAllTasks() {
-		return taskRepository.findAll();
-	}
 
     public List<Task> getReminders() {
         List<Task> tasks = taskRepository.findAll();
